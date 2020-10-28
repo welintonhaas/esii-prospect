@@ -28,11 +28,12 @@ class DAOUsuario{
         
         $usuario = new Usuario();
 
-        $sql = $connDB->prepare("SELECT login, nome, email, celular from usuario
+        $sql = $connDB->prepare("   SELECT 
+                                        login, nome, email, celular from usuario
                                     WHERE
-                                    login = ?
+                                        login = ?
                                     AND
-                                    senha = ?");
+                                        senha = ? ");
         $sql->bind_param('ss', $login, $senha);
         $sql->execute();
         
@@ -68,10 +69,10 @@ class DAOUsuario{
             die($e->getMessage());
         }
 
-        $sqlInsert = $connDB->prepare("INSERT INTO usuario
-                                        (nome, email, login, senha)
+        $sqlInsert = $connDB->prepare(" INSERT INTO 
+                                            usuario (nome, email, login, senha)
                                         VALUES
-                                        (?, ?, ?, ?)");
+                                            (?, ?, ?, ?) ");
         $sqlInsert->bind_param("ssss", $nome, $email, $login, $senha);
         $sqlInsert->execute();
 

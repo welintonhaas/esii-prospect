@@ -26,17 +26,122 @@ class DAOProspect{
             die($e->getMessage());
         }
 
-        $sqlInsert = $connDB->prepare(" INSERT INTO prospect
-                                        (nome, email, celular, facebook, whatsapp)
+        $sqlInsert = $connDB->prepare(" INSERT INTO 
+                                            prospect  (nome, email, celular, facebook, whatsapp)
                                         VALUES
-                                        (?, ?, ?, ?, ?)");
+                                            (?, ?, ?, ?, ?)");
         $sqlInsert->bind_param("ssss", $nome, $email, $celular, $facebook, $whatsapp);
         $sqlInsert->execute();
 
         if(!$sqlInsert->error){
             $retorno =  TRUE;
         }else{
-            throw new \Exception("Não foi possível incluir novo usuário!");
+            throw new \Exception("Não foi possível incluir novo prospect!");
+            die;
+        }
+
+        $connDB->close();
+        $sqlInsert->close();
+        return $retorno;
+
+    }
+
+    /**
+    * Atualiza um prospect no banco de dados
+    * @param Prospect $prospect Objeto do tipo Prospect que deverá ser atualizado
+    * @return TRUE|Exception TRUE para alteração bem sucedida ou Exception para alteração mal sucedida
+    */
+    public function atualizarProspect($id, $nome, $email, $celular, $facebook, $whatsapp)
+    {
+        
+        try {
+            $connDB = $this->conectarBanco();
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
+
+        $sqlUpdate = $connDB->prepare(" UPDATE 
+                                            prospect 
+                                        SET
+                                            nome = ?, 
+                                            email = ?, 
+                                            celular = ?, 
+                                            facebook = ?, 
+                                            whatsapp = ?
+                                        WHERE 
+                                            id = ?");
+        $sqlUpdate->bind_param("sssssi", $nome, $email, $celular, $facebook, $whatsapp, $id);
+        $sqlUpdate->execute();
+
+        if(!$sqlUpdate->error){
+            $retorno =  TRUE;
+        }else{
+            throw new \Exception("Não foi atualizar o prospect!");
+            die;
+        }
+
+        $connDB->close();
+        $sqlInsert->close();
+        return $retorno;
+
+    }
+    
+    /**
+    * Excluir um prospect no banco de dados
+    * @param Prospect $prospect Objeto do tipo Prospect que deverá ser excluir
+    * @return TRUE|Exception TRUE para exclusão bem sucedida ou Exception para exclusão mal sucedida
+    */
+    public function excluirProspect($id)
+    {
+        
+        try {
+            $connDB = $this->conectarBanco();
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
+
+        $sqlDelete = $connDB->prepare(" DELETE 
+                                            prospect
+                                        WHERE 
+                                            id = ? ");
+        $sqlDelete->bind_param("i", $id);
+        $sqlDelete->execute();
+
+        if(!$sqlDelete->error){
+            $retorno =  TRUE;
+        }else{
+            throw new \Exception("Não foi excluir o prospect!");
+            die;
+        }
+
+        $connDB->close();
+        $sqlInsert->close();
+        return $retorno;
+
+    }
+    
+    /**
+    * Buscar um prospect no banco de dados
+    * @param Prospect $prospect Objeto do tipo Prospect que deverá ser encontrado
+    * @return Prospect Retorna o prospect encontrado
+    */
+    public function buscarProspect($email)
+    {
+        
+        try {
+            $connDB = $this->conectarBanco();
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
+
+        $sql = $connDB->prepare("SELECT * FROM prospect WHERE email = ? ");
+        $sql->bind_param("s", $email);
+        $result = $sql->execute();
+
+        if(!$sql->error){
+            $retorno =  $result->fetch_assoc();
+        }else{
+            throw new \Exception("Não foi encontrar o prospect!");
             die;
         }
 
