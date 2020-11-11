@@ -1,8 +1,8 @@
 <?php
 namespace DAO;
-mysqli_report(MYSQLY_REPORT_STRICT);
-require_once('../model/Usuario.php');
-use model\Usuario;
+mysqli_report(MYSQLI_REPORT_STRICT);
+require_once('../models/Usuario.php');
+use models\Usuario;
 
 /**
  * Esta classe é responsável por fazer a comunicação com o banco de dados,
@@ -42,10 +42,12 @@ class DAOUsuario{
 
             if($resultado->num_rows === 0){
                 $usuario->addUsuario(null, null, null, null, FALSE);
+                throw new \Exception("Usuário ou senha inválidos!");
             }else{
                 while($linha = $resultado->fetch_assoc()){
-                $usuari->addUsuario($linha['login'], $linha['nome'], $linha['email'], $linha['celular'], TRUE);
+                $usuario->addUsuario($linha['login'], $linha['nome'], $linha['email'], $linha['celular'], TRUE);
                 }
+                return $usuario;
             }
         }else{
             throw new \Exception("Erro ao executar busca com os dados fornecidos!");
@@ -60,7 +62,7 @@ class DAOUsuario{
     * @param Usuario $usuario Objeto do tipo Usuario que deverá ser cadastrado
     * @return TRUE|Exception TRUE para inclusão bem sucedida ou Exception para inclusão mal sucedida
     */
-    public function incluirUsuario($nome, $email, $login, $senha)
+    public function incluirUsuario($nome, $email, $celular, $login, $senha)
     {
 
         try {
@@ -70,10 +72,10 @@ class DAOUsuario{
         }
 
         $sqlInsert = $connDB->prepare(" INSERT INTO 
-                                            usuario (nome, email, login, senha)
+                                            usuario (nome, email, celular, login, senha)
                                         VALUES
-                                            (?, ?, ?, ?) ");
-        $sqlInsert->bind_param("ssss", $nome, $email, $login, $senha);
+                                            (?, ?, ?, ?, ?) ");
+        $sqlInsert->bind_param("sssss", $nome, $email, $celular, $login, $senha);
         $sqlInsert->execute();
 
         if(!$sqlInsert->error){
@@ -94,15 +96,10 @@ class DAOUsuario{
     */
     private function conectarBanco()
     {
-
-        if(!defined('DS')){
-            define('DS', DIRECTORY_SEPARATOR );
-        }
-        if(!defined('BASE_DIR')){
-            define('BASE_DIR', dirname(__FILE__).DS );
-        }
-
-        require_once(BASE_DIR.'bd_config.php');
+        $ds = DIRECTORY_SEPARATOR;
+        $base_dir = dirname(__FILE__).$ds;
+        
+        require($base_dir.'bd_config.php');
 
         try{
             $conn = new \MySQLi($dbhost, $user, $password, $db);
@@ -111,7 +108,7 @@ class DAOUsuario{
             throw new \Exception($e);
             die;
         }
-
+        
     }
 }
 ?>

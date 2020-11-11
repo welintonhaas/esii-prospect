@@ -1,6 +1,6 @@
 <?php
 
-namespace pospect;
+namespace models;
 
 /**
  * Classe Model de Prospect
@@ -30,7 +30,7 @@ class Prospect{
     * Celular do prospect
     * @var string
     */
-    public $celuar;
+    public $celular;
 
     /**
     * Facebook do prospect

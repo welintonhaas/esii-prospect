@@ -1,6 +1,6 @@
 <?php
-$db = 'bd_prospect';
-$user = 'root';
+$db = 'bd_prospects';
+$user = 'pro';
 $password = '';
 $dbhost = 'localhost';
 ?>

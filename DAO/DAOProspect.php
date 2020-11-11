@@ -1,8 +1,8 @@
-<? 
+<?php
 namespace DAO;
-mysqli_report(MYSQLY_REPORT_STRICT);
-require_once('../model/Prospect.php');
-use model\Prospect;
+mysqli_report(MYSQLI_REPORT_STRICT);
+require_once('../models/Prospect.php');
+use models\Prospect;
 
 /**
  * Esta classe é responsável por fazer a comunicação com o banco de dados,
@@ -30,7 +30,7 @@ class DAOProspect{
                                             prospect  (nome, email, celular, facebook, whatsapp)
                                         VALUES
                                             (?, ?, ?, ?, ?)");
-        $sqlInsert->bind_param("ssss", $nome, $email, $celular, $facebook, $whatsapp);
+        $sqlInsert->bind_param("sssss", $nome, $email, $celular, $facebook, $whatsapp);
         $sqlInsert->execute();
 
         if(!$sqlInsert->error){
@@ -157,15 +157,10 @@ class DAOProspect{
     */
     private function conectarBanco()
     {
-
-        if(!defined('DS')){
-            define('DS', DIRECTORY_SEPARATOR );
-        }
-        if(!defined('BASE_DIR')){
-            define('BASE_DIR', dirname(__FILE__).DS );
-        }
-
-        require_once(BASE_DIR.'bd_config.php');
+        $ds = DIRECTORY_SEPARATOR;
+        $base_dir = dirname(__FILE__).$ds;
+        
+        require($base_dir.'bd_config.php');
 
         try{
             $conn = new \MySQLi($dbhost, $user, $password, $db);
