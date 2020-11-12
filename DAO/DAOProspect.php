@@ -69,7 +69,7 @@ class DAOProspect{
                                             facebook = ?, 
                                             whatsapp = ?
                                         WHERE 
-                                            id = ?");
+                                            cod_prospect = ?");
         $sqlUpdate->bind_param("sssssi", $nome, $email, $celular, $facebook, $whatsapp, $id);
         $sqlUpdate->execute();
 
@@ -81,7 +81,6 @@ class DAOProspect{
         }
 
         $connDB->close();
-        $sqlInsert->close();
         return $retorno;
 
     }
@@ -100,10 +99,11 @@ class DAOProspect{
             die($e->getMessage());
         }
 
-        $sqlDelete = $connDB->prepare(" DELETE 
+        $sqlDelete = $connDB->prepare(" DELETE FROM
                                             prospect
                                         WHERE 
-                                            id = ? ");
+                                            cod_prospect = ?");
+                                           
         $sqlDelete->bind_param("i", $id);
         $sqlDelete->execute();
 
@@ -115,7 +115,6 @@ class DAOProspect{
         }
 
         $connDB->close();
-        $sqlInsert->close();
         return $retorno;
 
     }
@@ -123,7 +122,7 @@ class DAOProspect{
     /**
     * Buscar um prospect no banco de dados
     * @param Prospect $prospect Objeto do tipo Prospect que deverá ser encontrado
-    * @return Prospect Retorna o prospect encontrado
+    * @return nome Retorna o nome do prospec encontrado
     */
     public function buscarProspect($email)
     {
@@ -134,10 +133,12 @@ class DAOProspect{
             die($e->getMessage());
         }
 
-        $sql = $connDB->prepare("SELECT * FROM prospect WHERE email = ? ");
+        $sql = $connDB->prepare("SELECT nome FROM prospect WHERE email = ?");
         $sql->bind_param("s", $email);
-        $result = $sql->execute();
 
+        $sql->execute();
+        $result = $sql->get_result();
+        
         if(!$sql->error){
             $retorno =  $result->fetch_assoc();
         }else{
@@ -146,8 +147,7 @@ class DAOProspect{
         }
 
         $connDB->close();
-        $sqlInsert->close();
-        return $retorno;
+        return $retorno['nome'];
 
     }
 
