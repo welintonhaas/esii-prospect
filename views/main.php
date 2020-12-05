@@ -1,4 +1,17 @@
+<?php
+require_once('../models/Usuario.php');
+use models\Usuario;
+session_start();
 
+if(isset($_SESSION['usuario'])){ 
+
+        # Deslogar
+        if(isset($_POST['sair'])){
+            session_destroy();
+            header("Location: ../index.php");
+        }
+
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,8 +32,16 @@
                     </li>
                 </ul>
                 <span class="navbar-text">
-                    Bem vindo: ---
+                    Bem vindo: 
+                    <?php 
+                        $usuario = unserialize($_SESSION['usuario']);
+                        echo $usuario->nome; 
+                    ?>
                 </span>
+                <form action="main.php" method="POST">
+                    <input name="sair" type="hidden">
+                    <button type="submit" class="btn">Sair</button>
+                </form>
             </div>
         </nav>
         </header>
@@ -28,5 +49,8 @@
     </body>
 </html>
 <?php
-
+}else{
+    $_SESSION['erroLogin'] = "Você precisa fazer login para acessar o sistema";
+    header("Location: ../index.php");
+}
 ?>

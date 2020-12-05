@@ -1,9 +1,12 @@
+<?php 
+session_start();
+?>
 <!DOCTYPE html>
 <html>
-<!-- Tratando erros com sessão -->
+<!-- Tratando erros com sessão -->Qualcomm QCWB335
     <head>
         <title>Bem Vindo ao Sistema</title>
-        <link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="../libs/bootstrap/css/bootstrap.css">
         <meta charset="UTF-8">
     </head>
     <body>
@@ -12,7 +15,7 @@
             <div class="collapse navbar-collapse" id="textoNavbar">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="../principal.php">Home <span class="sr-only">(Página atual)</span></a>
+                        <a class="nav-link" href="../main.php">Home <span class="sr-only">(Página atual)</span></a>
                     </li>
                </ul>
             </div>
@@ -28,6 +31,8 @@
                     <input name="nome" id="nome" type="text" placeholder="Digite seu nome" class="form-control" required/>
                     <label for="email">E-mail:</label>
                     <input name="email" id="email" type="text" placeholder="Digite seu email" class="form-control" required/>
+                    <label for="celular">Celular:</label>
+                    <input name="celular" id="celular" type="text" placeholder="Digite seu celular" class="form-control" required/>
                     <label for="login">Login:</label>
                     <input name="login" id="login" placeholder="Digite seu login" class="form-control" required autofocus autocomplete="off"/>
                     <label for="senha">Senha:</label>
@@ -36,6 +41,15 @@
                 <button type="submit" class="btn btn-success">Cadastrar</button>
                 <a href="../../index.php" class="btn btn-danger">Cancelar</a>
             </form>
+            <p class="text-center text-danger">
+                <?php 
+                    if(isset($_SESSION['erroNovoUsuario'])){
+                        echo $_SESSION['erroNovoUsuario'];
+                        unset($_SESSION['erroNovoUsuario']);
+                    }
+                ?>
+            </p>
+
         </div>
     </body>
 </html>

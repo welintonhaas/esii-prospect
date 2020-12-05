@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Cadastro de Prospects</title>
-        <link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="views/libs/bootstrap/css/bootstrap.css">
         <style type="text/css">
             .login-form {
                 width: 600px;
@@ -14,16 +14,17 @@
             }
 
         </style>
+        <base href="http://prospect.com.br">
     </head>
     <body>
         <div class="login-form">
-            <form class="form-signin" action="" method="POST">
-            <div class="container">
-                <div class="row">
-                    <img src="assets/customer.jpg" width="80">
+            <form class="form-signin" action="controllers/Usuario/c_validar_login.php" method="POST">
+                <div class="container">
+                    <div class="row">
+                        <img src="views/assets/customer.jpg" width="80">
+                    </div>
                 </div>
-            </div>
-            <h2 class="text-center">Log in</h2>
+                <h2 class="text-center">Log in</h2>
                 <div class="form-group">
                     <input name="login" type="text" class="form-control" placeholder="Login" required="required">
                 </div>
@@ -36,7 +37,12 @@
             </form>
             <p class="text-center"><a href="views/Usuario/v_incluir_usuario.php">Cadastre-se</a></p>
             <p class="text-center text-danger">
-                ---
+                 <?php 
+                    if(isset($_SESSION['erroLogin'])){
+                        echo $_SESSION['erroLogin'];
+                        unset($_SESSION['erroLogin']);
+                    }
+                ?>
             </p>
         </div>
     </body>

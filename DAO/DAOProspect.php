@@ -121,7 +121,7 @@ class DAOProspect{
     
     /**
     * Buscar um prospect no banco de dados
-    * @param Prospect $prospect Objeto do tipo Prospect que deverá ser encontrado
+    * @param string $email Email do Prospect que deverá ser encontrado
     * @return nome Retorna o nome do prospec encontrado
     */
     public function buscarProspect($email)
