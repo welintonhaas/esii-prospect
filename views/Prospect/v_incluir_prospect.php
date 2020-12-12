@@ -1,8 +1,13 @@
+<?php 
+require_once('../../models/Usuario.php');
+use models\Usuario;
+session_start(); 
+?>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Bem Vindo ao Sistema</title>
-        <link rel="stylesheet" type="text/css" href="../../libs/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="../libs/bootstrap/css/bootstrap.css">
         <meta charset="UTF-8">
     </head>
     <body>
@@ -14,11 +19,15 @@
                         <a class="nav-link" href="../main.php">Home <span class="sr-only">(Página atual)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Cadastrar Prospects</a>
+                        <a class="nav-link" href="#">Prospects</a>
                     </li>
                 </ul>
                 <span class="navbar-text">
-                        Bem vindo: ---
+                        Bem vindo: 
+                        <?php 
+                            $usuario = unserialize($_SESSION['usuario']);
+                            echo $usuario->nome; 
+                        ?>
                 </span>
             </div>
         </nav>
@@ -26,11 +35,11 @@
         <div class="container">
             <form class="form-signin" action="../../controllers/Prospect/c_incluir_prospect.php" method="POST">
                 <div>
-                    <h5 class="form-signin-heading">Cadastro de Usuários:</h5>
+                    <h5 class="form-signin-heading">Cadastro de Prospcts:</h5>
                 </div class="">
                 <div class="form-group">
                      <label for="nome">Nome:</label>
-                     <input name="codigo" id="nome" type="text" placeholder="Digite seu nome" class="form-control" required/>
+                     <input name="nome" id="nome" type="text" placeholder="Digite seu nome" class="form-control" required/>
                      <label for="email">E-mail:</label>
                      <input name="email" id="email" placeholder="Digite seu E-mail" class="form-control" required autofocus autocomplete="off"/>
                      <label for="celular">Celular:</label>

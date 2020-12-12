@@ -68,8 +68,8 @@ class ControllerProspect{
     /**
      * Recebe os dados do Usuário, faz o devido tratamento e envia para o DAO executar
      * no banco de dados
-     * @param string $id ID do Prospect que será atualizado
-     * @return TRUE|Exception Retorna TRUE caso a inclusão tenha sido bem sucedida
+     * @param string $id ID do Prospect que será removido
+     * @return TRUE|Exception Retorna TRUE caso a exclusão tenha sido bem sucedida
      * ou uma Exception caso não tenha.
      */
     public function eliminarProspect($id){
@@ -94,6 +94,39 @@ class ControllerProspect{
 
         try{
             $retorno = $daoProspect->buscarProspect($email);
+        }catch(\Exception $e){
+            throw new \Exception($e->getMessage());
+        }
+
+        return $retorno;
+    }
+
+    /**
+    * Buscar um prospect no banco de dados
+    * @param int $cod_prospect Código do Prospect que deverá ser encontrado
+    * @return Prospect Retorna o prospec encontrado
+    */
+    public function econtrarUmProspect($cod_prospect){
+        $daoProspect = new DAOProspect();
+
+        try{
+            $retorno = $daoProspect->buscarUmProspect($cod_prospect);
+        }catch(\Exception $e){
+            throw new \Exception($e->getMessage());
+        }
+
+        return $retorno;
+    }
+
+    /**
+    * Lista todos prospect do banco de dados
+    * @return Prospect[] Retorna um array de prospects
+    */
+    public function exibirProspects(){
+        $daoProspect = new DAOProspect();
+
+        try{
+            $retorno = $daoProspect->listarProspect();
         }catch(\Exception $e){
             throw new \Exception($e->getMessage());
         }

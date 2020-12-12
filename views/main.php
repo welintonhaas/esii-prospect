@@ -28,12 +28,13 @@ if(isset($_SESSION['usuario'])){
                         <a class="nav-link" href="#">Home <span class="sr-only">(Página atual)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Cadastrar Prospects</a>
+                        <a class="nav-link" href="Prospect/v_listar_prospect.php">Prospects</a>
                     </li>
                 </ul>
                 <span class="navbar-text">
                     Bem vindo: 
                     <?php 
+                    
                         $usuario = unserialize($_SESSION['usuario']);
                         echo $usuario->nome; 
                     ?>

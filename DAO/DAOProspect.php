@@ -1,7 +1,8 @@
 <?php
 namespace DAO;
 mysqli_report(MYSQLI_REPORT_STRICT);
-require_once('../models/Prospect.php');
+$root = $_SERVER['DOCUMENT_ROOT'];
+require_once($root.'../models/Prospect.php');
 use models\Prospect;
 
 /**
@@ -148,6 +149,68 @@ class DAOProspect{
 
         $connDB->close();
         return $retorno['nome'];
+
+    }
+
+    /**
+    * Buscar um prospect no banco de dados
+    * @param int $cod_prospect Código do Prospect que deverá ser encontrado
+    * @return Prospect Retorna o prospec encontrado
+    */
+    public function buscarUmProspect($cod_prospect)
+    {
+        
+        try {
+            $connDB = $this->conectarBanco();
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
+
+        $sql = $connDB->prepare("SELECT * FROM prospect WHERE cod_prospect = ?");
+        $sql->bind_param("i", $cod_prospect);
+
+        $sql->execute();
+        $result = $sql->get_result();
+        
+        if(!$sql->error){
+            $retorno =  $result->fetch_assoc();
+        }else{
+            throw new \Exception("Não foi encontrar o prospect!");
+            die;
+        }
+
+        $connDB->close();
+        return $retorno;
+
+    }
+
+    /**
+    * Buscar um prospect no banco de dados
+    * @param string $email Email do Prospect que deverá ser encontrado
+    * @return nome Retorna o nome do prospec encontrado
+    */
+    public function listarProspect()
+    {
+        
+        try {
+            $connDB = $this->conectarBanco();
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
+
+        $sql = $connDB->prepare("SELECT * FROM prospect ORDER BY 1");
+        $sql->execute();
+        $result = $sql->get_result();
+        
+        if(!$sql->error){
+            $retorno =  $result->fetch_all(MYSQLI_ASSOC);
+        }else{
+            throw new \Exception("Não foi encontrar os prospects!");
+            die;
+        }
+
+        $connDB->close();
+        return $retorno;
 
     }
 
